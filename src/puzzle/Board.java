@@ -1,9 +1,10 @@
 package puzzle;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
-    private int[][] Board = new int[4][4];
+    private int[][] board = new int[4][4];
 
     private class TileCoordinates {
         public int x;
@@ -20,27 +21,29 @@ public class Board {
     public Board() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Board[i][j] = i * 4 + j + 1;
+                board[i][j] = i * 4 + j + 1;
                 if (i != 3 || j != 3) Coordinates[i * 4 + j + 1] = new TileCoordinates(j + 1, i + 1);
             }
         }
-        Board[3][3] = 0;
+        board[3][3] = 0;
         Coordinates[0] = new TileCoordinates(4, 4);
     }
 
     public int[][] getBoard() {
-        return Board;
+        return board;
     }
 
-
+    public void setBoard(int[][] board) {
+        this.board = board;
+    }
 
     public boolean moveUp() {
         if (Coordinates[0].y > 1) {
-            int movedTile = Board[Coordinates[0].y - 2][Coordinates[0].x - 1];
+            int movedTile = board[Coordinates[0].y - 2][Coordinates[0].x - 1];
             Coordinates[movedTile].y++;
             Coordinates[0].y--;
-            Board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
-            Board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
+            board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
+            board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
         }
         else return false;
 
@@ -49,11 +52,11 @@ public class Board {
 
     public boolean moveDown() {
         if (Coordinates[0].y < 4) {
-            int movedTile = Board[Coordinates[0].y][Coordinates[0].x - 1];
+            int movedTile = board[Coordinates[0].y][Coordinates[0].x - 1];
             Coordinates[movedTile].y--;
             Coordinates[0].y++;
-            Board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
-            Board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
+            board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
+            board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
         }
         else return false;
 
@@ -62,11 +65,11 @@ public class Board {
 
     public boolean moveLeft() {
         if (Coordinates[0].x > 1) {
-            int movedTile = Board[Coordinates[0].y - 1][Coordinates[0].x - 2];
+            int movedTile = board[Coordinates[0].y - 1][Coordinates[0].x - 2];
             Coordinates[movedTile].x++;
             Coordinates[0].x--;
-            Board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
-            Board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
+            board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
+            board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
         }
         else return false;
 
@@ -75,11 +78,11 @@ public class Board {
 
     public boolean moveRight() {
         if (Coordinates[0].x < 4) {
-            int movedTile = Board[Coordinates[0].y - 1][Coordinates[0].x];
+            int movedTile = board[Coordinates[0].y - 1][Coordinates[0].x];
             Coordinates[movedTile].x--;
             Coordinates[0].x++;
-            Board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
-            Board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
+            board[Coordinates[0].y - 1][Coordinates[0].x - 1] = 0;
+            board[Coordinates[movedTile].y - 1][Coordinates[movedTile].x - 1] = movedTile;
         }
         else return false;
 
@@ -97,16 +100,41 @@ public class Board {
         }
     }
 
+    public Solver getSolver() {
+        return new Solver(board);
+    }
+
+    public ArrayList<int[][]> getMoves() {
+        ArrayList<int[][]> moves = new ArrayList<>();
+        if (this.moveUp()) {
+            moves.add(board);
+            this.moveDown();
+        }
+        if (this.moveDown()) {
+            moves.add(board);
+            this.moveUp();
+        }
+        if (this.moveLeft()) {
+            moves.add(board);
+            this.moveRight();
+        }
+        if (this.moveRight()) {
+            moves.add(board);
+            this.moveLeft();
+        }
+        return moves;
+    }
+
     public String toString() {
         StringBuilder board = new StringBuilder();
         for (int i = 0; i < 4; i++) {
             board.append("‖");
             for (int j = 0; j < 4; j++) {
-               if(Board[i][j] / 10 == 0){
+               if(this.board[i][j] / 10 == 0){
                    board.append(" ");
-                   board.append(Board[i][j]);
+                   board.append(this.board[i][j]);
                    board.append(" ");
-               } else board.append(Board[i][j]);
+               } else board.append(this.board[i][j]);
 
 
                 board.append("‖");

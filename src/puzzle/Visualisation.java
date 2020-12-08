@@ -14,9 +14,11 @@ import java.io.IOException;
 
 public class Visualisation extends Application {
 
-    //static public Model.Main Main = new Model.Main();
     static public Stage stage = null;
     public TilePane root = new TilePane();
+    //public static Visualisation thisVis = null;
+    //Scene scene;
+
 
     Board board;
     //int[][] Board;
@@ -24,8 +26,10 @@ public class Visualisation extends Application {
     private class Tile extends StackPane{
         private final Double side = 60.0;
 
+        Label numLabel;
+
         public Tile(Integer num) {
-            Label numLabel;
+            //Label numLabel;
             if (num == 16) {
                 numLabel = new Label("X");}
             else {
@@ -44,6 +48,18 @@ public class Visualisation extends Application {
             //tile.setAlignment(Pos.CENTER);
             this.setPrefSize(side, side);
         }
+
+        public void setNum(Integer num) {
+            Label newLabel;
+            if (num == 16) {
+                numLabel = new Label("X");}
+            else {
+                numLabel = new Label(num.toString());
+            }
+//            newLabel.setPrefSize(side, side);
+//            newLabel.setAlignment(Pos.CENTER);
+            //numLabel
+        }
     }
 
     @Override
@@ -57,20 +73,6 @@ public class Visualisation extends Application {
             for (int j = 0; j < 4; j++) {
                 Integer temp = array[i][j];
                 //Integer temp = i * 4 + j + 1;
-//
-//                Label num = new Label(temp.toString());
-//                num.setPrefSize(50.0, 50.0);
-//                num.setAlignment(Pos.CENTER);
-//                Rectangle border = new Rectangle();
-//                border.setWidth(50);
-//                border.setHeight(50);
-//                border.setFill(Color.WHITE);
-//                border.setStroke(Color.DARKRED);
-//                StackPane tile = new StackPane();
-//                tile.getChildren().add(border);
-//                tile.getChildren().add(num);
-//                //tile.setAlignment(Pos.CENTER);
-//                tile.setPrefSize(50.0, 50.0);
                 StackPane tile = new Tile(temp);
                 root.getChildren().add(tile);
             }
@@ -78,6 +80,7 @@ public class Visualisation extends Application {
 
 
         Scene scene = new Scene(root);
+        //scene.setRoot(root);
         Visualisation.stage = stage;
         stage.setResizable(false);
         stage.setTitle("15 Puzzle");
@@ -86,24 +89,59 @@ public class Visualisation extends Application {
 
     }
 
-    public Visualisation(Board board) {
-        this.board = board;
+
+    public Visualisation() {
+        board = new Board();
+        board.shuffle();
     }
 
-//    public static void setRoot(String fxml) throws IOException {
-//        scene.setRoot(loadFXML(fxml));
-//    }
-//
-//    public void setBoard(int[][] Board) {
-//        this.Board = Board;
-//    }
-//
-//    public static Parent loadFXML(String fxml) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(Visualisation.class.getResource(fxml + ".fxml"));
-//        return fxmlLoader.load();
+//    public void setBoard(Board board) {
+//        this.board = board;
 //    }
 
+    public void show() {
+        if (this.board != null) {
+            TilePane root = new TilePane();
+            int[][] array = board.getBoard();
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    Integer temp = array[i][j];
+                    StackPane tile = new Tile(temp);
+                    root.getChildren().add(tile);
+                }
+            }
+            //scene.setRoot(root);
+        }
+    }
+
     public static void main(String[] args) {
+        //Board board = new Board();
+
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                app.start();
+//            }
+//        }.start();
+//        Visualisation visualisation;
+//        visualisation = Visualisation.thisVis;
+//        visualisation.setBoard(board);
+//        visualisation.show();
+        //startUpTest.printSomething();
+        /// Visualisation visualisation = new Visualisation(board);
+        //visualisation.main(new String[0]);
+//        System.out.println(this.board.toString());
+//        this.board.shuffle();
+//        System.out.println(this.board.toString());
+        //visualisation.show();
+//	    board.moveUp();
+//        System.out.println(board.toString());
+//        board.moveDown();
+//        System.out.println(board.toString());
+//        board.moveLeft();
+//        System.out.println(board.toString());
+//        board.moveRight();
+//        System.out.println(board.toString());
         launch();
     }
 

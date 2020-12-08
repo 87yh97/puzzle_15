@@ -1,21 +1,22 @@
 package puzzle;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.PriorityQueue;
+
 public class Main {
 
-    public static void main(String[] args) {
-	    Board board = new Board();
-	    Visualisation visualisation = new Visualisation(board);
-	    Visualisation.main(new String[0]);
-	    System.out.println(board.toString());
-	    board.shuffle();
-        System.out.println(board.toString());
-//	    board.moveUp();
-//        System.out.println(board.toString());
-//        board.moveDown();
-//        System.out.println(board.toString());
-//        board.moveLeft();
-//        System.out.println(board.toString());
-//        board.moveRight();
-//        System.out.println(board.toString());
+    public static void main(String[] args) throws IOException {
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        pq.add(1);
+        pq.add(3);
+        pq.add(2);
+        pq.add(8);
+        for (int i = 0; i < 10; i++) {
+            System.out.println(pq.poll());
+        }
+
     }
 }

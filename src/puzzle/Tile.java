@@ -7,7 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Tile extends StackPane{
-    static private Double side = 60.0;
+    final private Double side = 60.0;
+
 
     public Tile(Integer num) {
         Label numLabel;
