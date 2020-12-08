@@ -18,17 +18,46 @@ public class Visualisation extends Application {
     static public Stage stage = null;
     public TilePane root = new TilePane();
 
+    Board board;
+    //int[][] Board;
 
-    int[][] Board;
+    private class Tile extends StackPane{
+        private final Double side = 60.0;
+
+        public Tile(Integer num) {
+            Label numLabel;
+            if (num == 16) {
+                numLabel = new Label("X");}
+            else {
+                numLabel = new Label(num.toString());
+            }
+            numLabel.setPrefSize(side, side);
+            numLabel.setAlignment(Pos.CENTER);
+            Rectangle border = new Rectangle();
+            border.setWidth(side);
+            border.setHeight(side);
+            border.setFill(Color.WHITE);
+            border.setStroke(Color.DARKRED);
+            //StackPane tile = new StackPane();
+            this.getChildren().add(border);
+            this.getChildren().add(numLabel);
+            //tile.setAlignment(Pos.CENTER);
+            this.setPrefSize(side, side);
+        }
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
         root.setPrefRows(4);
         root.setPrefColumns(4);
 
+        int[][] array = board.getBoard();
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Integer temp = i * 4 + j + 1;
+                Integer temp = array[i][j];
+                //Integer temp = i * 4 + j + 1;
+//
 //                Label num = new Label(temp.toString());
 //                num.setPrefSize(50.0, 50.0);
 //                num.setAlignment(Pos.CENTER);
@@ -55,6 +84,10 @@ public class Visualisation extends Application {
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    public Visualisation(Board board) {
+        this.board = board;
     }
 
 //    public static void setRoot(String fxml) throws IOException {
