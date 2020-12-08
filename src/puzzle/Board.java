@@ -16,7 +16,7 @@ public class Board {
         }
     }
 
-    private TileCoordinates[] Coordinates = new TileCoordinates[16];
+    private final TileCoordinates[] Coordinates = new TileCoordinates[16];
 
     public Board() {
         for (int i = 0; i < 4; i++) {
@@ -29,13 +29,25 @@ public class Board {
         Coordinates[0] = new TileCoordinates(4, 4);
     }
 
+    public Board(int[][] board) {
+        this.board = board;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                //board[i][j] = i * 4 + j + 1;
+                Coordinates[board[i][j]] = new TileCoordinates(j + 1, i + 1);
+            }
+        }
+//        board[3][3] = 0;
+//        Coordinates[0] = new TileCoordinates(4, 4);
+    }
+
     public int[][] getBoard() {
         return board;
     }
 
-    public void setBoard(int[][] board) {
-        this.board = board;
-    }
+//    public void setBoard(int[][] board) {
+//        this.board = board;
+//    }
 
     public boolean moveUp() {
         if (Coordinates[0].y > 1) {

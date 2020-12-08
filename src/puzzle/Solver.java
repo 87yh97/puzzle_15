@@ -5,30 +5,41 @@ import java.util.PriorityQueue;
 
 public class Solver {
 
-    ArrayList<int[][]> history = new ArrayList<>();
+    //ArrayList<int[][]> history = new ArrayList<>();
 
     PriorityQueue<State> open = new PriorityQueue<>();
 
-    State currentState = null;
+    State initialState;
+
+    State currentState;
+
+    //int currentStep = 0;
 
     class State implements Comparable<State>{
-        State lastState;
+        State prevState;
         //State nextState;
         int[][] board;
         int metric;
+        int stateMetric;
+        int currentStep;
 
-        public State(int[][] board, State lastState, int prevStepsNum) {
+        public State(int[][] board, State prevState, int currentStep) {
             this.board = board;
-            int tempMetric = prevStepsNum;
+            this.currentStep = currentStep;
+            stateMetric = 0;
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
                     if (i == 3 && j == 3) {
-                        if (board[i][j] != 0) tempMetric++;
-                    } else if (board[i][j] != i * 4 + j + 1) tempMetric++;
+                        if (board[i][j] != 0) stateMetric++;
+                    } else if (board[i][j] != i * 4 + j + 1) stateMetric++;
                 }
             }
-            metric = tempMetric;
-            this.lastState = lastState;
+            metric = stateMetric + currentStep;
+            this.prevState = prevState;
+        }
+
+        public boolean isFinal() {
+            return stateMetric == 0;
         }
 
         @Override
@@ -39,7 +50,7 @@ public class Solver {
 
 
     public Solver(int[][] board) {
-        State initialState = new State(board, null, 0);
+        initialState = new State(board, null, 0);
         //initialState.lastState = null;
         //initialState.board = board;
         //initialState.metric = 0;
@@ -47,7 +58,28 @@ public class Solver {
     }
 
     public ArrayList<int[][]> solve() {
+        open.add(initialState);
 
+        while(!currentState.isFinal()) {
+            currentState = open.poll();
+            assert currentState != null;
+            int currentStep = currentState.currentStep;
+            Board currentBoard = new Board(currentState.board);
+            ArrayList<int[][]> moves = currentBoard.getMoves();
+            for (int[][] move : moves) {
+                open.add(new State(move, currentState, currentStep + 1));
+            }
+            System.out.println("IM STUCK");
+        }
+
+        ArrayList<int[][]> solution = new ArrayList<>();
+
+        while(currentState != null) {
+            solution.add(currentState.board);
+            currentState = currentState.prevState;
+        }
+
+        return solution;
     }
 
 }
