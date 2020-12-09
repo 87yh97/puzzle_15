@@ -67,11 +67,11 @@ public class Visualisation extends Application {
         root.setPrefRows(4);
         root.setPrefColumns(4);
 
-        int[][] array = board.getBoard();
+        int[] array = board.getBoard();
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Integer temp = array[i][j];
+                Integer temp = array[i * 4 + j];
                 //Integer temp = i * 4 + j + 1;
                 StackPane tile = new Tile(temp);
                 root.getChildren().add(tile);
@@ -102,10 +102,10 @@ public class Visualisation extends Application {
     public void show() {
         if (this.board != null) {
             TilePane root = new TilePane();
-            int[][] array = board.getBoard();
+            int[] array = board.getBoard();
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    Integer temp = array[i][j];
+                    Integer temp = array[i * 4 + j];
                     StackPane tile = new Tile(temp);
                     root.getChildren().add(tile);
                 }
